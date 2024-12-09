@@ -8,7 +8,7 @@ namespace LeaveManagmentSystem.Web.MappingProfiles
     {
         public AutoMapperProfile()
         {
-            CreateMap<LeaveType, IndexVM>()
+            CreateMap<LeaveType, IndexReadOnlyVM>()
                 .ForMember(dest => dest.Days, opt => opt
                 .MapFrom(src => src.DefaultDays));
         }

@@ -28,7 +28,7 @@ namespace LeaveManagmentSystem.Web.Controllers
             // SELECT * FROM LeaveTypes
             var data = await _context.LeaveTypes.ToListAsync();
 
-            var viewData = _mapper.Map<List<IndexVM>>(data);
+            var viewData = _mapper.Map<List<IndexReadOnlyVM>>(data);
 
             // data model to viw model
             //var viewData = data.Select(p => new IndexVM
@@ -56,7 +56,9 @@ namespace LeaveManagmentSystem.Web.Controllers
                 return NotFound();
             }
 
-            return View(leaveType);
+            var viewData = _mapper.Map<IndexReadOnlyVM>(leaveType);
+
+            return View(viewData);
         }
 
         // GET: LeaveTypes/Create

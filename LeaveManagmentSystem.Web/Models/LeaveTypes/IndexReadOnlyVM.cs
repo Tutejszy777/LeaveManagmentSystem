@@ -1,6 +1,6 @@
 ﻿namespace LeaveManagmentSystem.Web.Models.LeaveTypes
 {
-    public class IndexVM
+    public class IndexReadOnlyVM
     {
         public int Id { get; set; }
 
