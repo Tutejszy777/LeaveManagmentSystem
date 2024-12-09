@@ -11,6 +11,8 @@ namespace LeaveManagmentSystem.Web.MappingProfiles
             CreateMap<LeaveType, IndexReadOnlyVM>()
                 .ForMember(dest => dest.Days, opt => opt
                 .MapFrom(src => src.DefaultDays));
+
+            CreateMap<LeaveTypeCreateVM, LeaveType>();
         }
     }
 }
