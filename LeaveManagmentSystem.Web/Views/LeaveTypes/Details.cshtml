@@ -1,4 +1,4 @@
-﻿@model LeaveManagmentSystem.Web.Data.LeaveType
+﻿@model IndexReadOnlyVM
 
 @{
     ViewData["Title"] = "Details";
@@ -17,10 +17,10 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DefaultDays)
+            @Html.DisplayNameFor(model => model.Days)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DefaultDays)
+            @Html.DisplayFor(model => model.Days)
         </dd>
     </dl>
 </div>
