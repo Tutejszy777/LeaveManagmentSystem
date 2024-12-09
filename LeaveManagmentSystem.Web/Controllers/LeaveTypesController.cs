@@ -74,6 +74,13 @@ namespace LeaveManagmentSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(LeaveTypeCreateVM leaveTypeCreate)
         {
+            /*
+                if(leaveTypeCreate.Name.Length < 4 || leaveTypeCreate.Name.Length > 150)
+                {
+                    ModelState.AddModelError("Name", "You have length violated requirments");
+                }
+            */
+
             if (ModelState.IsValid)
             {
                 var leaveType = _mapper.Map<LeaveType>(leaveTypeCreate);
