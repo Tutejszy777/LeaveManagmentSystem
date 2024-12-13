@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LeaveManagmentSystem.Web.Data;
 using LeaveManagmentSystem.Web.Models.LeaveTypes;
 using AutoMapper;
+using LeaveManagmentSystem.Web.Data.Migrations;
 
 namespace LeaveManagmentSystem.Web.Controllers
 {
@@ -74,12 +75,10 @@ namespace LeaveManagmentSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(LeaveTypeCreateVM leaveTypeCreate)
         {
-            /*
-                if(leaveTypeCreate.Name.Length < 4 || leaveTypeCreate.Name.Length > 150)
-                {
-                    ModelState.AddModelError("Name", "You have length violated requirments");
-                }
-            */
+            if (await CheckIfLeaveNameExists(leaveTypeCreate.Name))
+            {
+                ModelState.AddModelError(nameof(leaveTypeCreate.Name), "Name already exists in db");
+            }
 
             if (ModelState.IsValid)
             {
@@ -120,6 +119,11 @@ namespace LeaveManagmentSystem.Web.Controllers
             if (id != leaveTypeEdit.Id)
             {
                 return NotFound();
+            }
+
+            if (await CheckIfLeaveNameExistsForEdit(leaveTypeEdit))
+            {
+                ModelState.AddModelError(nameof(leaveTypeEdit.Name), "Name already exists in db");
             }
 
             if (ModelState.IsValid)
@@ -184,6 +188,19 @@ namespace LeaveManagmentSystem.Web.Controllers
         private bool LeaveTypeExists(int id)
         {
             return _context.LeaveTypes.Any(e => e.Id == id);
+        }
+
+        private async Task<bool> CheckIfLeaveNameExists(string name)
+        {
+            var loverCaseName = name.ToLower();
+            return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(loverCaseName));
+        }
+
+        private async Task<bool> CheckIfLeaveNameExistsForEdit(LeaveTypeEditVM leaveTypeEdit)
+        {
+            var loverCaseName = leaveTypeEdit.Name.ToLower();
+            return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(loverCaseName)
+            && q.Id != leaveTypeEdit.Id);
         }
     }
 }
