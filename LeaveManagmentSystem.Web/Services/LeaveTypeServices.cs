@@ -61,18 +61,18 @@ public class LeaveTypeServices : ILeaveTypeServices
         await _context.SaveChangesAsync();
     }
 
-    private bool LeaveTypeExists(int id)
+    public bool LeaveTypeExists(int id)
     {
         return _context.LeaveTypes.Any(e => e.Id == id);
     }
 
-    private async Task<bool> CheckIfLeaveNameExists(string name)
+    public async Task<bool> CheckIfLeaveNameExists(string name)
     {
         var loverCaseName = name.ToLower();
         return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(loverCaseName));
     }
 
-    private async Task<bool> CheckIfLeaveNameExistsForEdit(LeaveTypeEditVM leaveTypeEdit)
+    public async Task<bool> CheckIfLeaveNameExistsForEdit(LeaveTypeEditVM leaveTypeEdit)
     {
         var loverCaseName = leaveTypeEdit.Name.ToLower();
         return await _context.LeaveTypes.AnyAsync(q => q.Name.ToLower().Equals(loverCaseName)
