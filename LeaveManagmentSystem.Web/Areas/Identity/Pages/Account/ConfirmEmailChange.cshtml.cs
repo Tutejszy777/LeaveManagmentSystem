@@ -15,10 +15,10 @@ namespace LeaveManagmentSystem.Web.Areas.Identity.Pages.Account
 {
     public class ConfirmEmailChangeModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<AppicationUser> _userManager;
+        private readonly SignInManager<AppicationUser> _signInManager;
 
-        public ConfirmEmailChangeModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public ConfirmEmailChangeModel(UserManager<AppicationUser> userManager, SignInManager<AppicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
