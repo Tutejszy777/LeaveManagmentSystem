@@ -2,11 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using Microsoft.EntityFrameworkCore;
+
 namespace LeaveManagmentSystem.Web.Areas.Identity.Pages.Account;
 
 public class RegisterModel : PageModel
 {
     private readonly SignInManager<AppicationUser> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<AppicationUser> _userManager;
     private readonly IUserStore<AppicationUser> _userStore;
     private readonly IUserEmailStore<AppicationUser> _emailStore;
@@ -17,6 +20,7 @@ public class RegisterModel : PageModel
         UserManager<AppicationUser> userManager,
         IUserStore<AppicationUser> userStore,
         SignInManager<AppicationUser> signInManager,
+        RoleManager<IdentityRole> roleManager,
         ILogger<RegisterModel> logger,
         IEmailSender emailSender)
     {
@@ -24,6 +28,7 @@ public class RegisterModel : PageModel
         _userStore = userStore;
         _emailStore = GetEmailStore();
         _signInManager = signInManager;
+        this._roleManager = roleManager;
         _logger = logger;
         _emailSender = emailSender;
     }
@@ -33,7 +38,7 @@ public class RegisterModel : PageModel
     ///     directly from your code. This API may change or be removed in future releases.
     /// </summary>
     [BindProperty]
-    public InputModel Input { get; set; }
+    public InputModel Input { get; set; } = new InputModel();
 
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -94,8 +99,11 @@ public class RegisterModel : PageModel
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Date of birth")]
-        public string DateOfBirth { get; set; }
+        public DateOnly DateOfBirth { get; set; }
 
+        public string RoleName { get; set; }
+
+        public string[] RoleNames { get; set; }
 
     }
 
@@ -104,6 +112,12 @@ public class RegisterModel : PageModel
     {
         ReturnUrl = returnUrl;
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        var roles = await _roleManager.Roles
+            .Select(q => q.Name)
+            .Where(q => q != "Administrator")
+            .ToArrayAsync();
+
+        Input.RoleNames = roles;
     }
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -116,7 +130,7 @@ public class RegisterModel : PageModel
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-            user.DateOfBirth = DateOnly.Parse(Input.DateOfBirth);
+            user.DateOfBirth = Input.DateOfBirth;
             user.FirstName = Input.FirstName;
             user.LastName = Input.LastName;
             //on this step everything checked( email unique, password is proper etc..)
@@ -126,6 +140,15 @@ public class RegisterModel : PageModel
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
+
+                if(Input.RoleName == "Supervisor")
+                {
+                    await _userManager.AddToRolesAsync(user, ["Employee", "Supervisor"]);
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(user, Input.RoleName);
+                }
 
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
