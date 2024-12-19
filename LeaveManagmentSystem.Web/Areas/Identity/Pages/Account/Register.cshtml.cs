@@ -80,6 +80,23 @@ public class RegisterModel : PageModel
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Date of birth")]
+        public string DateOfBirth { get; set; }
+
+
     }
 
 
@@ -99,6 +116,11 @@ public class RegisterModel : PageModel
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+            user.DateOfBirth = DateOnly.Parse(Input.DateOfBirth);
+            user.FirstName = Input.FirstName;
+            user.LastName = Input.LastName;
+            //on this step everything checked( email unique, password is proper etc..)
+            //acts like insert statement so odifications beofre
             var result = await _userManager.CreateAsync(user, Input.Password);
 
             if (result.Succeeded)
