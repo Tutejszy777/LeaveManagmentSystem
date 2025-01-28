@@ -40,6 +40,9 @@ public class RegisterModel : PageModel
     [BindProperty]
     public InputModel Input { get; set; } = new InputModel();
 
+
+    public string[] RoleNames { get; set; }
+
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
     ///     directly from your code. This API may change or be removed in future releases.
@@ -103,8 +106,6 @@ public class RegisterModel : PageModel
 
         public string RoleName { get; set; }
 
-        public string[] RoleNames { get; set; }
-
     }
 
 
@@ -116,8 +117,7 @@ public class RegisterModel : PageModel
             .Select(q => q.Name)
             .Where(q => q != "Administrator")
             .ToArrayAsync();
-
-        Input.RoleNames = roles;
+        RoleNames = roles;
     }
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -179,6 +179,11 @@ public class RegisterModel : PageModel
         }
 
         // If we got this far, something failed, redisplay form
+        var roles = await _roleManager.Roles
+            .Select(q => q.Name)
+            .Where(q => q != "Administrator")
+            .ToArrayAsync();
+        RoleNames = roles;
         return Page();
     }
 
