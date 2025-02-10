@@ -115,7 +115,7 @@ public class RegisterModel : PageModel
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         var roles = await _roleManager.Roles
             .Select(q => q.Name)
-            .Where(q => q != "Administrator")
+            .Where(q => q != "ADMINISTRATOR")
             .ToArrayAsync();
         RoleNames = roles;
     }
@@ -181,7 +181,7 @@ public class RegisterModel : PageModel
         // If we got this far, something failed, redisplay form
         var roles = await _roleManager.Roles
             .Select(q => q.Name)
-            .Where(q => q != "Administrator")
+            .Where(q => q != "ADMINISTRATOR")
             .ToArrayAsync();
         RoleNames = roles;
         return Page();
