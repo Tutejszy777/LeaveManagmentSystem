@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using LeaveManagmentSystem.Web.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagmentSystem.Web.Areas.Identity.Pages.Account;
@@ -141,9 +142,9 @@ public class RegisterModel : PageModel
             {
                 _logger.LogInformation("User created a new account with password.");
 
-                if(Input.RoleName == "Supervisor")
+                if(Input.RoleName == Roles.Supervisor)
                 {
-                    await _userManager.AddToRolesAsync(user, ["Employee", "Supervisor"]);
+                    await _userManager.AddToRolesAsync(user, [Roles.Employee, Roles.Supervisor]);
                 }
                 else
                 {
@@ -181,7 +182,7 @@ public class RegisterModel : PageModel
         // If we got this far, something failed, redisplay form
         var roles = await _roleManager.Roles
             .Select(q => q.Name)
-            .Where(q => q != "ADMINISTRATOR")
+            .Where(q => q != Roles.Administrator)
             .ToArrayAsync();
         RoleNames = roles;
         return Page();
