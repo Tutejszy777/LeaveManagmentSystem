@@ -10,9 +10,11 @@ using LeaveManagmentSystem.Web.Models.LeaveTypes;
 using AutoMapper;
 using LeaveManagmentSystem.Web.Data.Migrations;
 using LeaveManagmentSystem.Web.Services;
+using LeaveManagmentSystem.Web.Common;
 
 namespace LeaveManagmentSystem.Web.Controllers;
 
+[Authorize(Roles = Roles.Administrator)]
 public class LeaveTypesController(ILeaveTypeServices leaveTypeServices) : Controller
 {
     private readonly ILeaveTypeServices _leaveTypeServices = leaveTypeServices;
