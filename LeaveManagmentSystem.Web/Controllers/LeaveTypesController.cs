@@ -9,8 +9,8 @@ using LeaveManagmentSystem.Web.Data;
 using LeaveManagmentSystem.Web.Models.LeaveTypes;
 using AutoMapper;
 using LeaveManagmentSystem.Web.Data.Migrations;
-using LeaveManagmentSystem.Web.Services;
 using LeaveManagmentSystem.Web.Common;
+using LeaveManagmentSystem.Web.Services.LeaveTypes;
 
 namespace LeaveManagmentSystem.Web.Controllers;
 
