@@ -1,6 +1,6 @@
 using LeaveManagmentSystem.Web.Data;
 using LeaveManagmentSystem.Web.Services.Email;
-using LeaveManagmentSystem.Web.Services.LeaveAllocation;
+using LeaveManagmentSystem.Web.Services.LeaveAllocationsDir;
 using LeaveManagmentSystem.Web.Services.LeaveTypes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
