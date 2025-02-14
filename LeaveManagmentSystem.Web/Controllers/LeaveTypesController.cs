@@ -48,7 +48,7 @@ public class LeaveTypesController(ILeaveTypeServices leaveTypeServices) : Contro
             return NotFound();
         }
 
-        var leaveType = await _leaveTypeServices.Get<IndexReadOnlyVM>(id.Value);
+        var leaveType = await _leaveTypeServices.Get<LeaveTypeReadOnlyVM>(id.Value);
 
         if (leaveType == null)
         {

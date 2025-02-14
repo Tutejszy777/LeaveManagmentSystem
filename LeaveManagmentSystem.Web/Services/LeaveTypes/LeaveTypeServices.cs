@@ -16,12 +16,12 @@ public class LeaveTypeServices : ILeaveTypeServices
         _mapper = mapper;
     }
 
-    public async Task<List<IndexReadOnlyVM>> GetAllLeaveTypesAsync()
+    public async Task<List<LeaveTypeReadOnlyVM>> GetAllLeaveTypesAsync()
     {
         //select * from leavetypes
         var data = await _context.LeaveTypes.ToListAsync();
         //convert data model to view model via automapper
-        var viewData = _mapper.Map<List<IndexReadOnlyVM>>(data);
+        var viewData = _mapper.Map<List<LeaveTypeReadOnlyVM>>(data);
         return viewData;
     }
 

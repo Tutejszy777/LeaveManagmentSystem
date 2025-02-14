@@ -2,7 +2,7 @@
 
 namespace LeaveManagmentSystem.Web.Models.LeaveTypes
 {
-    public class IndexReadOnlyVM : BaseLeaveTypeVM
+    public class LeaveTypeReadOnlyVM : BaseLeaveTypeVM
     {
         public string Name { get; set; }
 

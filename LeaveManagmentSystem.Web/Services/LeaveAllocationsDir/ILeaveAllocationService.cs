@@ -3,4 +3,5 @@
 public interface ILeaveAllocationService
 {
     Task AllocateLeave(string EmployeeId);
+    Task<List<LeaveAllocation>> GetAllocation();
 }

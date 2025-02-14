@@ -16,6 +16,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<ILeaveTypeServices, LeaveTypeServices>();
 builder.Services.AddScoped<ILeaveAllocationService, LeaveAllocationService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddDefaultIdentity<AppicationUser>(options => options.SignIn.RequireConfirmedAccount = true)

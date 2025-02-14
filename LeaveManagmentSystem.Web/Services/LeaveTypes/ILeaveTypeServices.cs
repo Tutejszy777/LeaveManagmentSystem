@@ -9,7 +9,7 @@ public interface ILeaveTypeServices
     Task Create(LeaveTypeCreateVM model);
     Task Edit(LeaveTypeEditVM model);
     Task<T?> Get<T>(int id) where T : class;
-    Task<List<IndexReadOnlyVM>> GetAllLeaveTypesAsync();
+    Task<List<LeaveTypeReadOnlyVM>> GetAllLeaveTypesAsync();
     bool LeaveTypeExists(int id);
     Task Remove(int id);
 }
