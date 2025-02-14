@@ -3,6 +3,7 @@
 #nullable disable
 
 using LeaveManagmentSystem.Web.Common;
+using LeaveManagmentSystem.Web.Services.LeaveAllocationsDir;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagmentSystem.Web.Areas.Identity.Pages.Account;
@@ -11,6 +12,7 @@ public class RegisterModel : PageModel
 {
     private readonly SignInManager<AppicationUser> _signInManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly ILeaveAllocationService _leaveAllocationService;
     private readonly UserManager<AppicationUser> _userManager;
     private readonly IUserStore<AppicationUser> _userStore;
     private readonly IUserEmailStore<AppicationUser> _emailStore;
@@ -18,6 +20,7 @@ public class RegisterModel : PageModel
     private readonly IEmailSender _emailSender;
 
     public RegisterModel(
+        ILeaveAllocationService leaveAllocationService,
         UserManager<AppicationUser> userManager,
         IUserStore<AppicationUser> userStore,
         SignInManager<AppicationUser> signInManager,
@@ -25,6 +28,7 @@ public class RegisterModel : PageModel
         ILogger<RegisterModel> logger,
         IEmailSender emailSender)
     {
+        this._leaveAllocationService = leaveAllocationService;
         _userManager = userManager;
         _userStore = userStore;
         _emailStore = GetEmailStore();
@@ -152,6 +156,9 @@ public class RegisterModel : PageModel
                 }
 
                 var userId = await _userManager.GetUserIdAsync(user);
+
+                await _leaveAllocationService.AllocateLeave(userId); //
+
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(
@@ -162,6 +169,10 @@ public class RegisterModel : PageModel
 
                 await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                // docker run -d -p 8080:80 -p 25:25 changemakerstudiosus/papercut-smtp:latest 
+                // learning purpose note
+                // http://localhost:8080
+
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
                 {

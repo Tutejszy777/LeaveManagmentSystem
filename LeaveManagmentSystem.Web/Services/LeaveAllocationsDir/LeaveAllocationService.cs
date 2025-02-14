@@ -20,12 +20,13 @@ public class LeaveAllocationService(ApplicationDbContext _context) : ILeaveAlloc
         // for each leave type create, create an allocation entry
         foreach (var item in leaveTypes)
         {
+            var accuralRate = decimal.Divide(item.DefaultDays, 12);
             var leaveAllocation = new LeaveAllocation
             {
                 EmployeeId = EmployeeId,
                 LeaveTypeId = item.Id,
                 PeriodId = period.Id,
-                Days = item.DefaultDays / monthsRemaining
+                Days = (int) Math.Ceiling(accuralRate * monthsRemaining)
             };
 
             _context.Add(leaveAllocation);
