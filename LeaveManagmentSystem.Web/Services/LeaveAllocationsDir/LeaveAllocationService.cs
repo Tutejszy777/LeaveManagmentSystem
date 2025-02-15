@@ -41,16 +41,18 @@ public class LeaveAllocationService(ApplicationDbContext _context, IHttpContextA
     public async Task<List<LeaveAllocation>> GetAllocation()
     {
         var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext?.User);
+        var currentDate = DateTime.Now;
+
         var leaveAllocations = await _context.LeaveAllocations
             .Include(q => q.LeaveType)
             .Include(q => q.Employee)
-            .Where(q => q.EmployeeId == user.Id)
+            .Where(q => q.EmployeeId == user.Id && q.Period.EndDate.Year == currentDate.Year)
             .ToListAsync();
 
         return leaveAllocations;
     }
 
-    public async Task<EmployeeAllocationVM> GetEmployeeAllocation()
+    public async Task<EmployeeAllocationVM> GetEmployeeAllocations()
     {
         var allocations = await GetAllocation();
         var allocationsVmList = _mapper.Map<List<LeaveAllocation>, List<LeaveAllocationVM>>(allocations);

@@ -9,7 +9,7 @@ public class LeaveAllocationController(ILeaveAllocationService _leaveAllocationS
 {
     public async Task<IActionResult> Details()
     {
-        var leaveAllocations = await _leaveAllocationService.GetAllocation();
-        return View();
+        var employeeVM = await _leaveAllocationService.GetEmployeeAllocations();
+        return View(employeeVM);
     }
 }
