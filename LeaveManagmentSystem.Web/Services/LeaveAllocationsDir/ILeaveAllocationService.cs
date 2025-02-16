@@ -5,6 +5,6 @@ namespace LeaveManagmentSystem.Web.Services.LeaveAllocationsDir;
 public interface ILeaveAllocationService
 {
     Task AllocateLeave(string EmployeeId);
-    Task<List<LeaveAllocation>> GetAllocation();
-    Task<EmployeeAllocationVM> GetEmployeeAllocations();
+    Task<EmployeeAllocationVM> GetEmployeeAllocations(string? userId);
+    Task<List<EmployeeListVM>> GetEmployees();
 }

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using LeaveManagmentSystem.Web.Data;
 using LeaveManagmentSystem.Web.Models.LeaveAllocationsDIR;
 using AutoMapper;
+using LeaveManagmentSystem.Web.Common;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LeaveManagmentSystem.Web.Services.LeaveAllocationsDir;
 
@@ -38,26 +40,14 @@ public class LeaveAllocationService(ApplicationDbContext _context, IHttpContextA
 
     }
 
-    public async Task<List<LeaveAllocation>> GetAllocation()
+
+    public async Task<EmployeeAllocationVM> GetEmployeeAllocations(string? userId)
     {
-        var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext?.User);
-        var currentDate = DateTime.Now;
+        var user = string.IsNullOrEmpty(userId) ? await _userManager.GetUserAsync(_httpContextAccessor.HttpContext?.User) : await _userManager.FindByIdAsync(userId);
 
-        var leaveAllocations = await _context.LeaveAllocations
-            .Include(q => q.LeaveType)
-            .Include(q => q.Employee)
-            .Where(q => q.EmployeeId == user.Id && q.Period.EndDate.Year == currentDate.Year)
-            .ToListAsync();
-
-        return leaveAllocations;
-    }
-
-    public async Task<EmployeeAllocationVM> GetEmployeeAllocations()
-    {
-        var allocations = await GetAllocation();
+        var allocations = await GetAllocation(user.Id);
         var allocationsVmList = _mapper.Map<List<LeaveAllocation>, List<LeaveAllocationVM>>(allocations);
 
-        var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext?.User);
         var employeeVM = new EmployeeAllocationVM
         {
             DateOfBirth = user.DateOfBirth,
@@ -70,4 +60,27 @@ public class LeaveAllocationService(ApplicationDbContext _context, IHttpContextA
 
         return employeeVM;
     }
+
+    public async Task<List<EmployeeListVM>> GetEmployees()
+    {
+        var users = await _userManager.GetUsersInRoleAsync(Roles.Employee);
+        var employees = _mapper.Map <List<AppicationUser>,List<EmployeeListVM>>(users.ToList());
+
+        return employees;
+    }
+
+
+    private async Task<List<LeaveAllocation>> GetAllocation(string? userId)
+    {
+        var currentDate = DateTime.Now;
+
+        var leaveAllocations = await _context.LeaveAllocations
+            .Include(q => q.LeaveType)
+            .Include(q => q.Employee)
+            .Where(q => q.EmployeeId == userId && q.Period.EndDate.Year == currentDate.Year)
+            .ToListAsync();
+
+        return leaveAllocations;
+    }
+
 }
