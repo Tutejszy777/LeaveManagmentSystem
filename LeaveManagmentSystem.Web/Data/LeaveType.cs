@@ -8,5 +8,7 @@ namespace LeaveManagmentSystem.Web.Data
         [Column(TypeName = "nvarchar(100)")]
         public string Name { get; set; }
         public int DefaultDays { get; set; }
+
+        public List<LeaveAllocation>? LeaveAllocations { get; set; }
     }
 }

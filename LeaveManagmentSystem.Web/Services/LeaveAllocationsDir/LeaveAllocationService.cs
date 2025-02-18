@@ -10,10 +10,12 @@ namespace LeaveManagmentSystem.Web.Services.LeaveAllocationsDir;
 
 public class LeaveAllocationService(ApplicationDbContext _context, IHttpContextAccessor _httpContextAccessor, UserManager<AppicationUser> _userManager, IMapper _mapper) : ILeaveAllocationService
 {
-    public async Task AllocateLeave(string EmployeeId)
+    public async Task AllocateLeave(string employeeId)
     {
         //get all leaveTypes
-        var leaveTypes = await _context.LeaveTypes.ToListAsync();
+        var leaveTypes = await _context.LeaveTypes
+            .Where(q => !q.LeaveAllocations.Any(x => x.EmployeeId == employeeId))
+            .ToListAsync();
 
         // get current period based on year
         var currentDate = DateTime.Now;
@@ -24,10 +26,14 @@ public class LeaveAllocationService(ApplicationDbContext _context, IHttpContextA
         // for each leave type create, create an allocation entry
         foreach (var item in leaveTypes)
         {
+            // works, but not best practice
+            //var allocationExists = await AllocationExists(employeeId, period.Id, item.Id);
+            //if(allocationExists) continue;
+
             var accuralRate = decimal.Divide(item.DefaultDays, 12);
             var leaveAllocation = new LeaveAllocation
             {
-                EmployeeId = EmployeeId,
+                EmployeeId = employeeId,
                 LeaveTypeId = item.Id,
                 PeriodId = period.Id,
                 Days = (int) Math.Ceiling(accuralRate * monthsRemaining)
@@ -47,6 +53,7 @@ public class LeaveAllocationService(ApplicationDbContext _context, IHttpContextA
 
         var allocations = await GetAllocation(user.Id);
         var allocationsVmList = _mapper.Map<List<LeaveAllocation>, List<LeaveAllocationVM>>(allocations);
+        var leaveTypesCount = await _context.LeaveTypes.CountAsync();
 
         var employeeVM = new EmployeeAllocationVM
         {
@@ -55,7 +62,8 @@ public class LeaveAllocationService(ApplicationDbContext _context, IHttpContextA
             FirstName = user.FirstName,
             LastName = user.LastName,
             Id = user.Id,
-            LeaveAllocations = allocationsVmList
+            LeaveAllocations = allocationsVmList,
+            IsCompletedAllocation = leaveTypesCount == allocations.Count()
         };
 
         return employeeVM;
@@ -81,6 +89,16 @@ public class LeaveAllocationService(ApplicationDbContext _context, IHttpContextA
             .ToListAsync();
 
         return leaveAllocations;
+    }
+
+    private async Task<bool> AllocationExists(string userId, int periodId, int LeaveTypeId)
+    {
+        var exists = await _context.LeaveAllocations.AnyAsync(q =>
+            q.EmployeeId == userId 
+            && q.PeriodId == periodId 
+            && q.LeaveTypeId == LeaveTypeId);
+
+        return exists;
     }
 
 }
