@@ -4,6 +4,7 @@ using LeaveManagmentSystem.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeaveManagmentSystem.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250211211649_AddedLeaveAllocationTable")]
+    partial class AddedLeaveAllocationTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,7 +105,7 @@ namespace LeaveManagmentSystem.Web.Data.Migrations
                         {
                             Id = "1020cc48-2bbf-4762-95f6-95da846e04ac",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "606609ab-bbf8-4005-b7f2-4f1b06714853",
+                            ConcurrencyStamp = "5fffd4a7-47b9-4162-b229-d55b91c37c24",
                             DateOfBirth = new DateOnly(1990, 12, 23),
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
@@ -111,9 +114,9 @@ namespace LeaveManagmentSystem.Web.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGL/DirGofdPUdQf3iKMMc6D0naf3rdC79N3JuuF9/QBxb90BOEhYqhmQwO88JEVHQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBqeuc6nY9uNUUWj57qZpRkDU2otLFBbRH2aqV9hh2hhHrlqKK7zLnYY9e4YwTi8uQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4c125ed0-3a4d-4b18-945b-a73c2e2996cd",
+                            SecurityStamp = "ee5ecddc-5472-4a62-aae9-c9bbb1029b89",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         });
@@ -367,7 +370,7 @@ namespace LeaveManagmentSystem.Web.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("LeaveManagmentSystem.Web.Data.LeaveType", "LeaveType")
-                        .WithMany("LeaveAllocations")
+                        .WithMany()
                         .HasForeignKey("LeaveTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -434,11 +437,6 @@ namespace LeaveManagmentSystem.Web.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("LeaveManagmentSystem.Web.Data.LeaveType", b =>
-                {
-                    b.Navigation("LeaveAllocations");
                 });
 #pragma warning restore 612, 618
         }

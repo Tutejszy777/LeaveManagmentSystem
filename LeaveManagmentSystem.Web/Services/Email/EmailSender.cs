@@ -1,7 +1,7 @@
 ﻿
 using System.Net.Mail;
 
-namespace LeaveManagmentSystem.Web.Services
+namespace LeaveManagmentSystem.Web.Services.Email
 {
     public class EmailSender(IConfiguration _configuration) : IEmailSender
     {
