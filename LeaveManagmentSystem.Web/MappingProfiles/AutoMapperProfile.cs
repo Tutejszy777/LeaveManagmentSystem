@@ -26,6 +26,9 @@ namespace LeaveManagmentSystem.Web.MappingProfiles
             CreateMap<Period, PeriodVM>();
 
             CreateMap<AppicationUser, EmployeeListVM>();
+
+            CreateMap<LeaveAllocation, LeaveAllocationEditVM>();
+
         }
     }
 }

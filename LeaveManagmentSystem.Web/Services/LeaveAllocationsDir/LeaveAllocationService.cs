@@ -49,7 +49,9 @@ public class LeaveAllocationService(ApplicationDbContext _context, IHttpContextA
 
     public async Task<EmployeeAllocationVM> GetEmployeeAllocations(string? userId)
     {
-        var user = string.IsNullOrEmpty(userId) ? await _userManager.GetUserAsync(_httpContextAccessor.HttpContext?.User) : await _userManager.FindByIdAsync(userId);
+        var user = string.IsNullOrEmpty(userId)
+            ? await _userManager.GetUserAsync(_httpContextAccessor.HttpContext?.User)
+            : await _userManager.FindByIdAsync(userId);
 
         var allocations = await GetAllocation(user.Id);
         var allocationsVmList = _mapper.Map<List<LeaveAllocation>, List<LeaveAllocationVM>>(allocations);
@@ -69,6 +71,19 @@ public class LeaveAllocationService(ApplicationDbContext _context, IHttpContextA
         return employeeVM;
     }
 
+    public async Task<LeaveAllocationEditVM> GetEmployeeAllocation(int allocationId)
+    {
+        var allocation = await _context.LeaveAllocations
+            .Include(q => q.LeaveType)
+            .Include(q => q.Employee)
+            .FirstOrDefaultAsync(q => q.Id == allocationId);
+
+        var model = _mapper.Map<LeaveAllocation, LeaveAllocationEditVM>(allocation);
+
+        return model;
+    }
+
+
     public async Task<List<EmployeeListVM>> GetEmployees()
     {
         var users = await _userManager.GetUsersInRoleAsync(Roles.Employee);
@@ -77,6 +92,20 @@ public class LeaveAllocationService(ApplicationDbContext _context, IHttpContextA
         return employees;
     }
 
+    public async Task UpdateAllocation(LeaveAllocationEditVM allocationEditVM)
+    {
+        //var leaveAllocation = await GetEmployeeAllocation(allocationEditVM.Id)
+        //    ?? throw new Exception("Leave allocation record does not exist."); // checks if null
+
+        //leaveAllocation.Days = allocationEditVM.Days;
+        // option 1 (less efficient)  _context.Update(leaveAllocation);
+        // option 2  _context.Entry(leaveAllocation).State = EntityState.Modified;
+        // await _context.SaveChangesAsync();
+
+        await _context.LeaveAllocations
+            .Where(q => q.Id == allocationEditVM.Id)
+            .ExecuteUpdateAsync(s => s.SetProperty(e => e.Days, allocationEditVM.Days));
+    }
 
     private async Task<List<LeaveAllocation>> GetAllocation(string? userId)
     {
