@@ -1,6 +1,6 @@
 ﻿namespace LeaveManagmentSystem.Web.Data
 {
-    public class LeaveRequest
+    public class LeaveRequest : BaseEntity
     {
         public DateOnly DateOnly { get; set; }
 
