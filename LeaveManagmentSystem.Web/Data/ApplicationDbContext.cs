@@ -65,5 +65,9 @@ namespace LeaveManagmentSystem.Web.Data
 
         public DbSet<LeaveAllocation> LeaveAllocations { get; set; }
 
+        public DbSet<LeaveRequestStatus> LeaveRequestStatuses { get; set; }
+
+        public DbSet<LeaveRequest> LeaveRequests { get; set; }
+
     }
 }
