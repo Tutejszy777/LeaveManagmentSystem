@@ -1,9 +1,11 @@
 ﻿using LeaveManagmentSystem.Web.Models.LeaveRequestDIR;
+using LeaveManagmentSystem.Web.Services.LeaveTypes;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LeaveManagmentSystem.Web.Controllers;
 
 [Authorize]
-public class LeaveRequestController : Controller
+public class LeaveRequestController(ILeaveTypeServices _leaveTypeServices) : Controller
 {
     // Employee view requests
     public async Task<IActionResult> Index()
@@ -14,7 +16,15 @@ public class LeaveRequestController : Controller
     // Employee create requests
     public async Task<IActionResult> Create()
     {
-        return View();
+        var leaveTypes = await _leaveTypeServices.GetAllLeaveTypesAsync();
+        var leaveTypesList = new SelectList(leaveTypes, "Id", "Name");
+        var model = new LeaveRequestCreateVM
+        {
+            DateOnly = DateOnly.FromDateTime(DateTime.Now),
+            DateEnd = DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
+            LeaveTypeList = leaveTypesList
+        };
+        return View(model);
     }
 
     // Employee create requests
