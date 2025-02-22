@@ -1,4 +1,6 @@
-﻿namespace LeaveManagmentSystem.Web.Controllers;
+﻿using LeaveManagmentSystem.Web.Models.LeaveRequestDIR;
+
+namespace LeaveManagmentSystem.Web.Controllers;
 
 [Authorize]
 public class LeaveRequestController : Controller
@@ -17,7 +19,7 @@ public class LeaveRequestController : Controller
 
     // Employee create requests
     [HttpPost]
-    public async Task<IActionResult> Create(int create )
+    public async Task<IActionResult> Create(LeaveRequestCreateVM model )
     {
         return View();
     }

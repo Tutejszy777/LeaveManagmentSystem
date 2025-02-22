@@ -16,7 +16,7 @@
 
 
         public AppicationUser? Employee { get; set; }
-        public string EmployeeId { get; set; }
+        public string EmployeeId { get; set; } = default!;
 
 
         public AppicationUser? Reviewer { get; set; }
