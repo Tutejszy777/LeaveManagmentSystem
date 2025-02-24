@@ -18,7 +18,7 @@ public class LeaveRequestService(IMapper _mapper, UserManager<AppicationUser> _u
         var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
         leaveRequest.EmployeeId = user.Id;
 
-        leaveRequest.LeaveStatusId = (int)LeaveRequestStatus.Pending;
+        leaveRequest.LeaveStatusId = (int)LeaveRequestStatusEnum.Pending;
 
         _context.Add(leaveRequest);
         
@@ -33,7 +33,7 @@ public class LeaveRequestService(IMapper _mapper, UserManager<AppicationUser> _u
 
     }
 
-    public Task<LeaveRequestListVM> GetAllLeaveRequests()
+    public Task<LeaveRequestReadOnlyVM> GetAllLeaveRequests()
     {
         throw new NotImplementedException();
     }

@@ -1,6 +1,6 @@
 ﻿namespace LeaveManagmentSystem.Web.Services.LeaveRequestDIR;
 
-public enum LeaveRequestStatus
+public enum LeaveRequestStatusEnum
 {
     Pending = 1,
     Approved = 2,
