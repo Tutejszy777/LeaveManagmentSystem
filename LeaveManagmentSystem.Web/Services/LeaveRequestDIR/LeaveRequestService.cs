@@ -43,6 +43,16 @@ public class LeaveRequestService(IMapper _mapper, UserManager<AppicationUser> _u
         throw new NotImplementedException();
     }
 
+    public async Task<bool> RequestDatesExceedAllocation(LeaveRequestCreateVM model)
+    {
+        var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+        var numberOfDays = model.DateEnd.DayNumber - model.DateOnly.DayNumber;
+        var allocation = await _context.LeaveAllocations
+            .FirstAsync(q => q.LeaveTypeId == model.LeaveTypeId && q.EmployeeId == user.Id);
+
+        return allocation.Days < numberOfDays;
+    }
+
     public Task ReviewLeaveRequest(ReviewLeaveRequestVM model)
     {
         throw new NotImplementedException();
