@@ -35,13 +35,14 @@ public class LeaveRequestController(ILeaveTypeServices _leaveTypeServices, ILeav
     {
         if(await _leaveRequestService.RequestDatesExceedAllocation(model))
         {
-            ModelState.AddModelError(nameof(model.DateEnd), "You have exceeded your allocations.");
+            ModelState.AddModelError("", "You have exceeded your allocations.");
             ModelState.AddModelError(nameof(model.DateEnd), "The number of days request is invalid.");
         }
 
         if (ModelState.IsValid)
         {
             await _leaveRequestService.CreateLeaveRequest(model);
+            return RedirectToAction(nameof(Index));
         }
         var leaveTypes = await _leaveTypeServices.GetAllLeaveTypesAsync();
         model.LeaveTypeList = new SelectList(leaveTypes, "Id", "Name");
