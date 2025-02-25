@@ -11,7 +11,8 @@ public class LeaveRequestController(ILeaveTypeServices _leaveTypeServices, ILeav
     // Employee view requests
     public async Task<IActionResult> Index()
     {
-        return View();
+        var model = await _leaveRequestService.GetEmployeeLeaveRequest();
+        return View(model);
     }
 
     // Employee create requests
@@ -52,7 +53,7 @@ public class LeaveRequestController(ILeaveTypeServices _leaveTypeServices, ILeav
     // Employee Cancel requests
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Cancel(int leaveRequestId)
+    public async Task<IActionResult> Cancel(int id)
     {
         return View();
     }

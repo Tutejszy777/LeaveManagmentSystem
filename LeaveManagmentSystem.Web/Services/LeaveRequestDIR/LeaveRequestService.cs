@@ -38,9 +38,25 @@ public class LeaveRequestService(IMapper _mapper, UserManager<AppicationUser> _u
         throw new NotImplementedException();
     }
 
-    public Task<EmployeeLeaveRequestListVM> GetEmployeeLeaveRequest()
+    public async Task<List<LeaveRequestReadOnlyVM>> GetEmployeeLeaveRequest()
     {
-        throw new NotImplementedException();
+        var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+        var leaveRequest = await _context.LeaveRequests
+            .Include(q => q.LeaveType) // join the leavetype
+            .Where(q => q.EmployeeId == user.Id)
+            .ToListAsync();
+
+        var model = leaveRequest.Select(q => new LeaveRequestReadOnlyVM
+        {
+            DateOnly = q.DateOnly,
+            DateEnd = q.DateEnd,
+            Days = q.DateEnd.DayNumber - q.DateOnly.DayNumber,
+            LeaveType = q.LeaveType.Name,
+            LeaveRequestsStatus = (LeaveRequestStatusEnum)q.LeaveStatusId,
+            Id = q.Id
+        }).ToList();
+
+        return model;
     }
 
     public async Task<bool> RequestDatesExceedAllocation(LeaveRequestCreateVM model)
