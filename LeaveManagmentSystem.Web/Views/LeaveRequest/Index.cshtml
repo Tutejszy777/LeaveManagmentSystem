@@ -86,14 +86,18 @@
         $(function () {
             $('.cancelBtn').click(
                 function (e) {
+
+                    e.preventDefault();
+
                     swal.fire({
                         title: "Are you sure?",
                         text: "You want to CANCEL this request?!",
                         icon: "warning",
                         buttons: true,
+                        showCancelButton: true,
                         dangerMode: true
                     }).then((willDelete) => {
-                        if (willDelete) {
+                        if (willDelete.isConfirmed) {
                             var btn = $(this);
                             var id = btn.attr('data-id');
                             $('#leaveRequestId').val(id);
