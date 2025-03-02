@@ -114,7 +114,8 @@ else
                     <td>
                         @if (item.LeaveRequestsStatus == LeaveRequestStatusEnum.Pending)
                         {
-                            <a asp-action="Review" class="btn btn-primary">Review</a>
+                            <a asp-action="Review" asp-route-id="@item.Id" class="btn btn-primary">Review</a>
+                            // asp route id to pass to function
                         }
                     </td>
                 </tr>

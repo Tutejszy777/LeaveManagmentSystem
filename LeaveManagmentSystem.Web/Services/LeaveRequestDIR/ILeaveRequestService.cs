@@ -8,7 +8,7 @@ namespace LeaveManagmentSystem.Web.Services.LeaveRequestDIR
         Task<List<LeaveRequestReadOnlyVM>> GetEmployeeLeaveRequest();
         Task<EmployeeLeaveRequestListVM> GetAllLeaveRequests();
         Task CanceLeaveRequest(int leaveRequestId);
-        Task ReviewLeaveRequest(ReviewLeaveRequestVM model );
+        Task ReviewLeaveRequest(int id, bool approved );
         Task<bool> RequestDatesExceedAllocation(LeaveRequestCreateVM model);
         Task<ReviewLeaveRequestVM> GetLeaveRequestForReview(int id);
     }
