@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LeaveManagmentSystem.Web.Models.LeaveAllocationsDIR;
 using LeaveManagmentSystem.Web.Models.LeaveRequestDIR;
 using Microsoft.EntityFrameworkCore;
 
@@ -92,6 +93,41 @@ public class LeaveRequestService(IMapper _mapper, UserManager<AppicationUser> _u
         return model;
     }
 
+
+    public Task ReviewLeaveRequest(ReviewLeaveRequestVM model)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ReviewLeaveRequestVM> GetLeaveRequestForReview(int id)
+    {
+        var leaveRequest = await _context.LeaveRequests
+            .Include(q => q.LeaveType)
+            .FirstAsync(q => q.Id == id);
+
+        var user = await _userManager.FindByIdAsync(leaveRequest.EmployeeId);
+
+        var model = new ReviewLeaveRequestVM
+        {
+            DateOnly = leaveRequest.DateOnly,
+            DateEnd = leaveRequest.DateEnd,
+            Days = leaveRequest.DateEnd.DayNumber - leaveRequest.DateOnly.DayNumber,
+            LeaveRequestsStatus = (LeaveRequestStatusEnum)leaveRequest.LeaveStatusId,
+            Id = leaveRequest.Id,
+            LeaveType = leaveRequest.LeaveType.Name,
+            Employee = new EmployeeListVM
+            {
+                Id = leaveRequest.EmployeeId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email
+            }
+        };
+
+        return model;
+    }
+
+
     public async Task<bool> RequestDatesExceedAllocation(LeaveRequestCreateVM model)
     {
         var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
@@ -102,8 +138,4 @@ public class LeaveRequestService(IMapper _mapper, UserManager<AppicationUser> _u
         return allocation.Days < numberOfDays;
     }
 
-    public Task ReviewLeaveRequest(ReviewLeaveRequestVM model)
-    {
-        throw new NotImplementedException();
-    }
 }
