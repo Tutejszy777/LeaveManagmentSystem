@@ -76,14 +76,13 @@
                         title: "Are you sure?",
                         text: "Please confirm",
                         icon: "warning",
-                        buttons: true,
                         showCancelButton: true,
-                        dangerMode: true
-                    }).then((confirm) => {
-                        if (confirm.isConfirmed) {
+                    }).then((result) => {
+                        if (result.isConfirmed) {
                             var btn = $(this);
-                            var id = btn.attr('data-id');
-                            var approved = btn.attr('approved');
+                            var id = btn.data('id');
+                            var approved = btn.data('approved');
+
                             $('#leaveRequestId').val(id);
                             $('#approved').val(approved);
                             $('#approvalForm').submit();
