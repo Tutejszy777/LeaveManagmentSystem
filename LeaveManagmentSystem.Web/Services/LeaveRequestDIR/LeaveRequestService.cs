@@ -46,7 +46,7 @@ public class LeaveRequestService(IMapper _mapper, UserManager<AppicationUser> _u
         var allocationToDeduct = await _context.LeaveAllocations
             .FirstAsync(q => q.LeaveTypeId == model.LeaveTypeId 
             && q.EmployeeId == user.Id
-            && q.PeriodId == period.Id);
+            && q.PeriodId == period.Id
             );
 
         allocationToDeduct.Days -= numberOfDays;
