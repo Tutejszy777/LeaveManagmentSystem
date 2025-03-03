@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LeaveManagmentSystem.Web.Data;
 using LeaveManagmentSystem.Web.Models.LeaveAllocationsDIR;
+using LeaveManagmentSystem.Web.Models.LeaveRequestDIR;
 using LeaveManagmentSystem.Web.Models.LeaveTypes;
 using LeaveManagmentSystem.Web.Models.PeriodsDIR;
 
@@ -28,6 +29,9 @@ namespace LeaveManagmentSystem.Web.MappingProfiles
             CreateMap<AppicationUser, EmployeeListVM>();
 
             CreateMap<LeaveAllocation, LeaveAllocationEditVM>();
+
+            //Leave Request
+            CreateMap<LeaveRequestCreateVM, LeaveRequest>();
 
         }
     }
