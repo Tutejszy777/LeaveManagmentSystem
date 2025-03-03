@@ -3,6 +3,8 @@ using LeaveManagmentSystem.Web.Services.Email;
 using LeaveManagmentSystem.Web.Services.LeaveAllocationsDir;
 using LeaveManagmentSystem.Web.Services.LeaveRequestDIR;
 using LeaveManagmentSystem.Web.Services.LeaveTypes;
+using LeaveManagmentSystem.Web.Services.PeriodDIR;
+using LeaveManagmentSystem.Web.Services.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -17,6 +19,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<ILeaveTypeServices, LeaveTypeServices>();
 builder.Services.AddScoped<ILeaveAllocationService, LeaveAllocationService>();
 builder.Services.AddScoped<ILeaveRequestService, LeaveRequestService>();
+builder.Services.AddScoped<IPeriodService, PeriodService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddHttpContextAccessor();

@@ -9,4 +9,5 @@ public interface ILeaveAllocationService
     Task<LeaveAllocationEditVM> GetEmployeeAllocation(int allocationId);
     Task<List<EmployeeListVM>> GetEmployees();
     Task UpdateAllocation(LeaveAllocationEditVM allocationEditVM);
+    Task<LeaveAllocation> GetCurrentAllocation(string userId, int leaveTypeId);
 }
