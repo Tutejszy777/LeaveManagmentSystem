@@ -1,3 +1,4 @@
+using LeaveManagmentSystem.Web.Common;
 using LeaveManagmentSystem.Web.Data;
 using LeaveManagmentSystem.Web.Services.Email;
 using LeaveManagmentSystem.Web.Services.LeaveAllocationsDir;
@@ -22,6 +23,14 @@ builder.Services.AddScoped<ILeaveRequestService, LeaveRequestService>();
 builder.Services.AddScoped<IPeriodService, PeriodService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminSupervisorOnly", policy =>
+    {
+        policy.RequireRole(Roles.Administrator, Roles.Supervisor);
+    });
+});
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());

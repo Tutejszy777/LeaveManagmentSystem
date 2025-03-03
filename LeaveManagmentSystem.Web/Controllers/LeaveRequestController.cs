@@ -1,4 +1,5 @@
-﻿using LeaveManagmentSystem.Web.Models.LeaveRequestDIR;
+﻿using LeaveManagmentSystem.Web.Common;
+using LeaveManagmentSystem.Web.Models.LeaveRequestDIR;
 using LeaveManagmentSystem.Web.Services.LeaveRequestDIR;
 using LeaveManagmentSystem.Web.Services.LeaveTypes;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -60,6 +61,7 @@ public class LeaveRequestController(ILeaveTypeServices _leaveTypeServices, ILeav
     }
 
     // admin/supervisor review requests
+    [Authorize(Policy = "AdminSupervisorOnly")]
     public async Task<IActionResult> ListRequests()
     {
         var model = await _leaveRequestService.GetAllLeaveRequests();
@@ -67,6 +69,7 @@ public class LeaveRequestController(ILeaveTypeServices _leaveTypeServices, ILeav
     }
 
     // admin/supervisor review requests
+    [Authorize(Policy = "AdminSupervisorOnly")]
     public async Task<IActionResult> Review(int id)
     {
         var model = await _leaveRequestService.GetLeaveRequestForReview(id);
@@ -76,6 +79,7 @@ public class LeaveRequestController(ILeaveTypeServices _leaveTypeServices, ILeav
     // admin/supervisor review requests
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Policy = "AdminSupervisorOnly")]
     public async Task<IActionResult> Review(int id, bool approved)
     {
         await _leaveRequestService.ReviewLeaveRequest(id, approved);
