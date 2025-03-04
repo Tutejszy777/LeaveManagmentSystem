@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using LeaveManagmentSystem.Web.Common;
 using LeaveManagmentSystem.Web.Services.LeaveAllocationsDir;
 using Microsoft.EntityFrameworkCore;
 

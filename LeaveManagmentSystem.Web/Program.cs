@@ -1,5 +1,3 @@
-using LeaveManagmentSystem.Web.Common;
-using LeaveManagmentSystem.Web.Data;
 using LeaveManagmentSystem.Web.Services.Email;
 using LeaveManagmentSystem.Web.Services.LeaveAllocationsDir;
 using LeaveManagmentSystem.Web.Services.LeaveRequestDIR;

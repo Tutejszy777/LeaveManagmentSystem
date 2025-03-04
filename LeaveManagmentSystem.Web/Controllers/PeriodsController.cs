@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using LeaveManagmentSystem.Web.Data;
-using LeaveManagmentSystem.Web.Common;
 
 namespace LeaveManagmentSystem.Web.Controllers
 {

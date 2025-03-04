@@ -1,4 +1,5 @@
-﻿global using LeaveManagmentSystem.Web.Data;
+﻿global using LeaveManagmentSystem.Data;
+global using LeaveManagmentSystem.Common.Static;
 global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Identity;

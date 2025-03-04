@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using LeaveManagmentSystem.Web.Data;
 using LeaveManagmentSystem.Web.Models.LeaveAllocationsDIR;
 using LeaveManagmentSystem.Web.Models.LeaveRequestDIR;
 using LeaveManagmentSystem.Web.Models.LeaveTypes;

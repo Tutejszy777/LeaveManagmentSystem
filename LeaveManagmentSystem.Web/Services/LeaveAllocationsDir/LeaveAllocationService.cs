@@ -1,9 +1,6 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using LeaveManagmentSystem.Web.Data;
+﻿using Microsoft.EntityFrameworkCore;
 using LeaveManagmentSystem.Web.Models.LeaveAllocationsDIR;
 using AutoMapper;
-using LeaveManagmentSystem.Web.Common;
 using Microsoft.IdentityModel.Tokens;
 using LeaveManagmentSystem.Web.Services.PeriodDIR;
 using LeaveManagmentSystem.Web.Services.Users;

@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using LeaveManagmentSystem.Web.Data;
 using LeaveManagmentSystem.Web.Models.LeaveTypes;
 using AutoMapper;
-using LeaveManagmentSystem.Web.Data.Migrations;
-using LeaveManagmentSystem.Web.Common;
+using LeaveManagmentSystem.Data.Migrations;
 using LeaveManagmentSystem.Web.Services.LeaveTypes;
 
 namespace LeaveManagmentSystem.Web.Controllers;

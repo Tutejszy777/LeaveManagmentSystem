@@ -1,5 +1,4 @@
-﻿using LeaveManagmentSystem.Web.Common;
-using LeaveManagmentSystem.Web.Models.LeaveRequestDIR;
+﻿using LeaveManagmentSystem.Web.Models.LeaveRequestDIR;
 using LeaveManagmentSystem.Web.Services.LeaveRequestDIR;
 using LeaveManagmentSystem.Web.Services.LeaveTypes;
 using Microsoft.AspNetCore.Mvc.Rendering;
