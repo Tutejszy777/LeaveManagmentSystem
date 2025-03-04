@@ -22,7 +22,7 @@
         public AppicationUser? Reviewer { get; set; }
         public string? ReviewerId { get; set; }
 
-        
+
         public string? RequestComments { get; set; }
     }
 }

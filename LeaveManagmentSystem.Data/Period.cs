@@ -1,6 +1,4 @@
-﻿using static LeaveManagmentSystem.Data.Period;
-
-namespace LeaveManagmentSystem.Data
+﻿namespace LeaveManagmentSystem.Data
 {
     public class Period : BaseEntity
     {

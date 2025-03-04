@@ -1,4 +1,4 @@
-﻿namespace LeaveManagmentSystem.Common.Static;
+﻿namespace LeaveManagementSystem.Common.Static;
 
 public static class Roles
 {

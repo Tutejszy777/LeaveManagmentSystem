@@ -1,5 +1,3 @@
-using LeaveManagmentSystem.Web.Models;
-using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace LeaveManagmentSystem.Web.Controllers

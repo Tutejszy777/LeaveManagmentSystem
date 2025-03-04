@@ -1,10 +1,11 @@
-using LeaveManagmentSystem.Web.Services.Email;
-using LeaveManagmentSystem.Web.Services.LeaveAllocationsDir;
-using LeaveManagmentSystem.Web.Services.LeaveRequestDIR;
-using LeaveManagmentSystem.Web.Services.LeaveTypes;
-using LeaveManagmentSystem.Web.Services.PeriodDIR;
-using LeaveManagmentSystem.Web.Services.Users;
-using Microsoft.AspNetCore.Identity;
+using LeaveManagementSystem.Application;
+using LeaveManagementSystem.Application.Services.EmailDIR;
+using LeaveManagementSystem.Application.Services.LeaveAllocationsDir;
+using LeaveManagementSystem.Application.Services.LeaveRequestDIR;
+using LeaveManagementSystem.Application.Services.LeaveTypesDIR;
+using LeaveManagementSystem.Application.Services.PeriodDIR;
+using LeaveManagementSystem.Application.Services.Users;
+using LeaveManagementSystem.Common.Static;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -15,12 +16,15 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddScoped<ILeaveTypeServices, LeaveTypeServices>();
-builder.Services.AddScoped<ILeaveAllocationService, LeaveAllocationService>();
-builder.Services.AddScoped<ILeaveRequestService, LeaveRequestService>();
-builder.Services.AddScoped<IPeriodService, PeriodService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddTransient<IEmailSender, EmailSender>();
+//builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());          changed to:
+ApplicationServicesRegistration.AddApplicationServices(builder.Services);
+
+//builder.Services.AddScoped<ILeaveTypeServices, LeaveTypeServices>();
+//builder.Services.AddScoped<ILeaveAllocationService, LeaveAllocationService>();
+//builder.Services.AddScoped<ILeaveRequestService, LeaveRequestService>();
+//builder.Services.AddScoped<IPeriodService, PeriodService>();
+//builder.Services.AddScoped<IUserService, UserService>();
+//builder.Services.AddTransient<IEmailSender, EmailSender>();           moved to : ApplicationSerivcesRegistration class
 
 builder.Services.AddAuthorization(options =>
 {
@@ -31,7 +35,6 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddDefaultIdentity<AppicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()

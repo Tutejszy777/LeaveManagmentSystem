@@ -10,7 +10,7 @@ namespace LeaveManagmentSystem.Data.Configurations
             builder.HasData(new LeaveRequestStatus
             {
                 Id = 1,
-                Name = "Pending" 
+                Name = "Pending"
             },
             new LeaveRequestStatus
             {

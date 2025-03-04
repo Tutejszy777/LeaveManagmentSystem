@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using LeaveManagementSystem.Application.Models.LeaveTypesDIR;
+using LeaveManagementSystem.Application.Services.LeaveTypesDIR;
 using Microsoft.EntityFrameworkCore;
-using LeaveManagmentSystem.Web.Models.LeaveTypes;
-using AutoMapper;
-using LeaveManagmentSystem.Data.Migrations;
-using LeaveManagmentSystem.Web.Services.LeaveTypes;
 
 namespace LeaveManagmentSystem.Web.Controllers;
 
@@ -53,7 +45,7 @@ public class LeaveTypesController(ILeaveTypeServices leaveTypeServices) : Contro
             return NotFound();
         }
 
-        
+
 
         return View(leaveType);
     }

@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using LeaveManagmentSystem.Web.Services.LeaveAllocationsDir;
+using LeaveManagementSystem.Application.Services.LeaveAllocationsDir;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagmentSystem.Web.Areas.Identity.Pages.Account;
@@ -145,7 +145,7 @@ public class RegisterModel : PageModel
             {
                 _logger.LogInformation("User created a new account with password.");
 
-                if(Input.RoleName == Roles.Supervisor)
+                if (Input.RoleName == Roles.Supervisor)
                 {
                     await _userManager.AddToRolesAsync(user, [Roles.Employee, Roles.Supervisor]);
                 }
