@@ -1,13 +1,5 @@
 using LeaveManagementSystem.Application;
-using LeaveManagementSystem.Application.Services.EmailDIR;
-using LeaveManagementSystem.Application.Services.LeaveAllocationsDir;
-using LeaveManagementSystem.Application.Services.LeaveRequestDIR;
-using LeaveManagementSystem.Application.Services.LeaveTypesDIR;
-using LeaveManagementSystem.Application.Services.PeriodDIR;
-using LeaveManagementSystem.Application.Services.Users;
-using LeaveManagementSystem.Common.Static;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +16,12 @@ ApplicationServicesRegistration.AddApplicationServices(builder.Services);
 //builder.Services.AddScoped<IPeriodService, PeriodService>();
 //builder.Services.AddScoped<IUserService, UserService>();
 //builder.Services.AddTransient<IEmailSender, EmailSender>();           moved to : ApplicationSerivcesRegistration class
+
+builder.Host.UseSerilog((context, config) => 
+    config.WriteTo.Console()
+    .ReadFrom.Configuration(context.Configuration)
+
+);
 
 builder.Services.AddAuthorization(options =>
 {
