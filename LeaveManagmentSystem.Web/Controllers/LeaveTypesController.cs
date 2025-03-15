@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace LeaveManagmentSystem.Web.Controllers;
 
 [Authorize(Roles = Roles.Administrator)]
-public class LeaveTypesController(ILeaveTypeServices leaveTypeServices) : Controller
+public class LeaveTypesController(ILeaveTypeServices leaveTypeServices, ILogger<LeaveTypesController> _logger) : Controller
 {
     private readonly ILeaveTypeServices _leaveTypeServices = leaveTypeServices;
 
@@ -24,6 +24,8 @@ public class LeaveTypesController(ILeaveTypeServices leaveTypeServices) : Contro
         //    Name = p.Name,
         //    NumberOfDays = p.DefaultDays.ToString(),
         //});
+
+        _logger.LogInformation("Index page visited");
 
         var viewData = await _leaveTypeServices.GetAllLeaveTypesAsync();
 
@@ -70,6 +72,7 @@ public class LeaveTypesController(ILeaveTypeServices leaveTypeServices) : Contro
 
         if (ModelState.IsValid)
         {
+            _logger.LogWarning("Leave failed");
             await _leaveTypeServices.Create(leaveTypeCreate);
             return RedirectToAction(nameof(Index));
         }
