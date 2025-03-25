@@ -1,7 +1,6 @@
-﻿using LeaveManagmentSystem.Web.Common;
-using LeaveManagmentSystem.Web.Models.LeaveRequestDIR;
-using LeaveManagmentSystem.Web.Services.LeaveRequestDIR;
-using LeaveManagmentSystem.Web.Services.LeaveTypes;
+﻿using LeaveManagementSystem.Application.Models.LeaveRequestDIR;
+using LeaveManagementSystem.Application.Services.LeaveRequestDIR;
+using LeaveManagementSystem.Application.Services.LeaveTypesDIR;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LeaveManagmentSystem.Web.Controllers;
@@ -33,9 +32,9 @@ public class LeaveRequestController(ILeaveTypeServices _leaveTypeServices, ILeav
     // Employee create requests
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(LeaveRequestCreateVM model )
+    public async Task<IActionResult> Create(LeaveRequestCreateVM model)
     {
-        if(await _leaveRequestService.RequestDatesExceedAllocation(model))
+        if (await _leaveRequestService.RequestDatesExceedAllocation(model))
         {
             ModelState.AddModelError("", "You have exceeded your allocations.");
             ModelState.AddModelError(nameof(model.DateEnd), "The number of days request is invalid.");

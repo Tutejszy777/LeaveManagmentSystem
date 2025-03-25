@@ -1,9 +1,6 @@
-﻿using Humanizer;
-using LeaveManagmentSystem.Web.Common;
-using LeaveManagmentSystem.Web.Models.LeaveAllocationsDIR;
-using LeaveManagmentSystem.Web.Services.LeaveAllocationsDir;
-using LeaveManagmentSystem.Web.Services.LeaveTypes;
-using Microsoft.AspNetCore.Mvc;
+﻿using LeaveManagementSystem.Application.Models.LeaveAllocationsDIR;
+using LeaveManagementSystem.Application.Services.LeaveAllocationsDir;
+using LeaveManagementSystem.Application.Services.LeaveTypesDIR;
 
 namespace LeaveManagmentSystem.Web.Controllers;
 
@@ -23,19 +20,19 @@ public class LeaveAllocationController(ILeaveAllocationService _leaveAllocationS
     public async Task<IActionResult> AllocateLeave(string userId)
     {
         await _leaveAllocationService.AllocateLeave(userId);
-        return RedirectToAction(nameof(Details), new {userId}); // bind to Details userId
+        return RedirectToAction(nameof(Details), new { userId }); // bind to Details userId
     }
 
     [Authorize(Roles = Roles.Administrator)]
     public async Task<IActionResult> EditAllocation(int? id)
     {
-        if(id == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var allocation = await _leaveAllocationService.GetEmployeeAllocation(id.Value);
-        if(allocation == null)
+        if (allocation == null)
         {
             return NotFound();
         }
@@ -47,11 +44,11 @@ public class LeaveAllocationController(ILeaveAllocationService _leaveAllocationS
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditAllocation(LeaveAllocationEditVM allocationEditVm)
     {
-        if(await _leaveTypeServices.DaysExceedMaximum(allocationEditVm.LeaveType.Id, allocationEditVm.Days))
+        if (await _leaveTypeServices.DaysExceedMaximum(allocationEditVm.LeaveType.Id, allocationEditVm.Days))
         {
             ModelState.AddModelError("Days", "You have exceeded the maximum days for this leave type");
         }
-        if(ModelState.IsValid)
+        if (ModelState.IsValid)
         {
             await _leaveAllocationService.UpdateAllocation(allocationEditVm);
             return RedirectToAction(nameof(Details), new { userId = allocationEditVm.Employee.Id });

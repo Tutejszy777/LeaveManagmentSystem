@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using LeaveManagementSystem.Application.Models.LeaveTypesDIR;
+using LeaveManagementSystem.Application.Services.LeaveTypesDIR;
 using Microsoft.EntityFrameworkCore;
-using LeaveManagmentSystem.Web.Data;
-using LeaveManagmentSystem.Web.Models.LeaveTypes;
-using AutoMapper;
-using LeaveManagmentSystem.Web.Data.Migrations;
-using LeaveManagmentSystem.Web.Common;
-using LeaveManagmentSystem.Web.Services.LeaveTypes;
 
 namespace LeaveManagmentSystem.Web.Controllers;
 
 [Authorize(Roles = Roles.Administrator)]
-public class LeaveTypesController(ILeaveTypeServices leaveTypeServices) : Controller
+public class LeaveTypesController(ILeaveTypeServices leaveTypeServices, ILogger<LeaveTypesController> _logger) : Controller
 {
     private readonly ILeaveTypeServices _leaveTypeServices = leaveTypeServices;
 
@@ -34,6 +24,8 @@ public class LeaveTypesController(ILeaveTypeServices leaveTypeServices) : Contro
         //    Name = p.Name,
         //    NumberOfDays = p.DefaultDays.ToString(),
         //});
+
+        _logger.LogInformation("Index page visited");
 
         var viewData = await _leaveTypeServices.GetAllLeaveTypesAsync();
 
@@ -55,7 +47,7 @@ public class LeaveTypesController(ILeaveTypeServices leaveTypeServices) : Contro
             return NotFound();
         }
 
-        
+
 
         return View(leaveType);
     }
@@ -80,6 +72,7 @@ public class LeaveTypesController(ILeaveTypeServices leaveTypeServices) : Contro
 
         if (ModelState.IsValid)
         {
+            _logger.LogWarning("Leave failed");
             await _leaveTypeServices.Create(leaveTypeCreate);
             return RedirectToAction(nameof(Index));
         }

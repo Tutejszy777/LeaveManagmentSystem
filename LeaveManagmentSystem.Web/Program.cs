@@ -1,28 +1,27 @@
-using LeaveManagmentSystem.Web.Common;
-using LeaveManagmentSystem.Web.Data;
-using LeaveManagmentSystem.Web.Services.Email;
-using LeaveManagmentSystem.Web.Services.LeaveAllocationsDir;
-using LeaveManagmentSystem.Web.Services.LeaveRequestDIR;
-using LeaveManagmentSystem.Web.Services.LeaveTypes;
-using LeaveManagmentSystem.Web.Services.PeriodDIR;
-using LeaveManagmentSystem.Web.Services.Users;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
+using LeaveManagementSystem.Application;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddScoped<ILeaveTypeServices, LeaveTypeServices>();
-builder.Services.AddScoped<ILeaveAllocationService, LeaveAllocationService>();
-builder.Services.AddScoped<ILeaveRequestService, LeaveRequestService>();
-builder.Services.AddScoped<IPeriodService, PeriodService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+DataServicesRegistration.AddDataServices(builder.Services, builder.Configuration);
+ApplicationServicesRegistration.AddApplicationServices(builder.Services);
+
+//builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); 
+//builder.Services.AddScoped<ILeaveTypeServices, LeaveTypeServices>();
+//builder.Services.AddScoped<ILeaveAllocationService, LeaveAllocationService>();
+//builder.Services.AddScoped<ILeaveRequestService, LeaveRequestService>();
+//builder.Services.AddScoped<IPeriodService, PeriodService>();
+//builder.Services.AddScoped<IUserService, UserService>();
+//builder.Services.AddTransient<IEmailSender, EmailSender>();           moved to : ApplicationSerivcesRegistration class
+
+builder.Host.UseSerilog((context, config) => 
+    config.WriteTo.Console()
+    .ReadFrom.Configuration(context.Configuration)
+
+);
 
 builder.Services.AddAuthorization(options =>
 {
@@ -33,9 +32,12 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-builder.Services.AddDefaultIdentity<AppicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<AppicationUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.Password.RequireDigit = true;
+})
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
