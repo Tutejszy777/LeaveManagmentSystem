@@ -17,6 +17,7 @@ public class RegisterModel : PageModel
     private readonly IUserEmailStore<AppicationUser> _emailStore;
     private readonly ILogger<RegisterModel> _logger;
     private readonly IEmailSender _emailSender;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
     public RegisterModel(
         ILeaveAllocationService leaveAllocationService,
@@ -166,8 +167,14 @@ public class RegisterModel : PageModel
                     values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                // grab the template 
+                var emailTemplatePath = Path.Combine(_webHostEnvironment.WebRootPath, "templates", "email_layout.html");
+                var template = await System.IO.File.ReadAllTextAsync(emailTemplatePath);
+                var messageBody = template
+                    .Replace("{UserName}", $"{Input.FirstName} {Input.LastName}")
+                    .Replace("{MessageContent}", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", messageBody);
                 // docker run -d -p 8080:80 -p 25:25 changemakerstudiosus/papercut-smtp:latest 
                 // learning purpose note
                 // http://localhost:8080
