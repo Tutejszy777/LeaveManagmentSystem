@@ -4,7 +4,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Configuration.AddEnvironmentVariables();
 
 DataServicesRegistration.AddDataServices(builder.Services, builder.Configuration);
 ApplicationServicesRegistration.AddApplicationServices(builder.Services);
